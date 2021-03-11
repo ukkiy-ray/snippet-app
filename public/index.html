@@ -24,6 +24,8 @@
         <v-layout>
           <v-flex xs5> <!-- 親要素横幅の 5/12 -->
             <div style="margin:10px">
+              <h2>Select Language</h2>
+              <v-select v-model='language' :items="languages" label="Language" v-on:change="abstruct"></v-select>
               <h2>Snippets Shortcut</h2>
               <ul>
                 <li v-for="snippet in snippetList"><span id='name' @click="goElem(snippet.id)">[{{ snippet.language }}] {{ snippet.title }}</span></li>
@@ -61,6 +63,7 @@
             <v-text-field v-model="postTitle" label="Snippet Title" required style='margin:20px; margin-top:30px'></v-text-field> 
             <v-flex d-flex>
               <v-text-field v-model="postLanguage" label="Language" required style='margin:20px; margin-bottom:0px; margin-left:20px'></v-text-field>
+              <v-select v-model='postLanguage' :items="languagesForEdit" label="Select from history" style='margin:20px; margin-bottom:0px;margin-left: 0px'></v-select>
             </v-flex>
 
             <v-card-text>
@@ -145,6 +148,9 @@
           return {
             snippetList: ['',''],
             allData: ['',''],
+            languages: ['All'],
+            languagesForEdit: [],
+            language: 'ALL',
 
             dialogPostFlag: false,
             postTitle: '',
@@ -168,8 +174,22 @@
             .then(response => {
                 this.allData = response.data
                 this.snippetList = this.allData
+
+                this.listLanguages();
+                this.abstruct();
               }
             );
+          },
+          listLanguages: function() {
+            this.languages = []
+            this.languagesForEdit = []
+            this.languages.push('ALL')
+            for (i=0;i<this.allData.length;i++) {
+              if (this.languages.indexOf(this.allData[i].language) == -1) {
+                this.languages.push(this.allData[i].language)
+                this.languagesForEdit.push(this.allData[i].language)
+              }
+            }
           },
           togglePostModal: function() {
             this.dialogPostFlag = !this.dialogPostFlag
@@ -222,6 +242,21 @@
           goTop: function() {
             document.getElementById("app").scrollIntoView(true)
           },
+          abstruct: function() {
+            if (this.language == 'ALL') {
+              this.snippetList = []
+              for (i=0;i<this.allData.length;i++) {
+                this.snippetList.push(this.allData[i])
+              }   
+            } else if (this.language != '') { 
+              this.snippetList = []
+              for (i=0;i<this.allData.length;i++) {
+                if (this.allData[i].language == this.language) {
+                  this.snippetList.push(this.allData[i])
+                }
+              }   
+            }
+          }
         }
       })
 
