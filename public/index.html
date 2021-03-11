@@ -16,10 +16,10 @@
     <v-app id="app">
 
       <v-toolbar color="green darken-2" dark>
-        <v-toolbar-title>Snippet App</v-toolbar-title>
+        <v-toolbar-title style="cursor: default;">Snippet App</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn flat @click="togglePostModal()">
-          <v-icon style="font-size: 16px; margin-right: 4px;">edit</v-icon>
+          <span style="font-size: 24px; margin-right: 8px;">+</span>
           New Snippet
         </v-btn>
       </v-toolbar>
@@ -60,7 +60,12 @@
                 <v-btn flat color="red" @click="togglePutModal(snippet.id)">Update</v-btn>
                 <v-btn flat color="gray" @click="toggleDeleteModal(snippet.id)">Delete</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn flat color="red" @click="goTop">Go Top</v-btn>
+                <v-btn flat color="green darken-2" @click="goTop">
+                  Go Top
+                  <span class="material-icons" style="margin-left: 8px;">
+                    keyboard_arrow_up
+                  </span>
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
