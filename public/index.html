@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vuetify@1.5/dist/vuetify.js"></script>
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
 
     <title>Snippet App</title>
   </head>
@@ -44,10 +45,12 @@
             <v-card style="margin-top: 10px" v-for="snippet in snippetList">
               <v-card-title primary-title>
                 <a v-bind:id='snippet.id'></a>
-                <h3 class="head-line">{{ snippet.title }}</h3>
+                <div style="background-color:#FFF59D">
+                  <h3 class="headline">[{{ snippet.language }}] {{ snippet.title }}</h3>
+                </div>
               </v-card-title>
               <div style="margin: 10px 20px;">
-                <textarea style='width:100%; height:300px; background-color:#efefef; padding:3px'>{{ snippet.contents }}</textarea>
+                <div v-html='showdown.makeHtml(snippet.contents)'></div>
               </div>
       
               <v-card-actions>
@@ -175,6 +178,8 @@
         },
         mounted () {
           this.listSnippet();
+          options = { headerLevelStart: 3, omitExtraWLInCodeBlocks: true, tables: true, simpleLineBreaks: true, simplifiedAutoLink: true }
+          this.showdown = new showdown.Converter(options)
         },
         methods: {
           listSnippet: function() {
