@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 2021_03_09_144810) do
   create_table "snippets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "title"
     t.string "language"
-    t.string "contents"
+    t.text "contents"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
